@@ -21,7 +21,8 @@ from mast3r.utils.misc import hash_md5
 import matplotlib.pyplot as pl
 pl.ion()
 
-torch.backends.cuda.matmul.allow_tf32 = True  # for gpu >= Ampere and pytorch >= 1.12
+# for gpu >= Ampere and pytorch >= 1.12
+torch.backends.cuda.matmul.allow_tf32 = True
 batch_size = 1
 
 weights_path = "naver/" + 'MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric'
@@ -33,4 +34,5 @@ chkpt_tag = hash_md5(weights_path)
 with tempfile.TemporaryDirectory(suffix='_mast3r_gradio_demo') as tmpdirname:
     cache_path = os.path.join(tmpdirname, chkpt_tag)
     os.makedirs(cache_path, exist_ok=True)
-    main_demo(tmpdirname, model, device, 512, server_name=None, server_port=None, silent=True, share=None)
+    main_demo(tmpdirname, model, device, 512, server_name=None, server_port=None,
+              silent=True, share=None, gradio_delete_cache=7200)
