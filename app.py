@@ -4,7 +4,7 @@
 # --------------------------------------------------------
 # masst3r demo
 # --------------------------------------------------------
-import spaces
+# import spaces
 import os
 import sys
 import os.path as path
@@ -50,7 +50,7 @@ class FileState:
         self.outfile_name = None
 
 
-@spaces.GPU()
+# @spaces.GPU()
 def local_get_reconstructed_scene(filelist, min_conf_thr, matching_conf_thr,
                                   as_pointcloud, cam_size,
                                   shared_intrinsics, **kw):
@@ -84,11 +84,12 @@ css = """.gradio-container {margin: 0 !important; min-width: 100%};"""
 title = "MASt3R Demo"
 with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, gradio_delete_cache)) as demo:
     filestate = gradio.State(None)
-    gradio.HTML('<h2 style="text-align: center;">MASt3R Demo</h2>')
+    gradio.HTML('<h2 style="text-align: center;">3D Reconstruction with MASt3R</h2>')
+    gradio.HTML('<h3 style="text-align: center;">Upload one or multiple images</h3>')
     with gradio.Column():
         inputfiles = gradio.File(file_count="multiple")
         with gradio.Row():
-            matching_conf_thr = gradio.Slider(label="Matching Confidence Thr", value=5.,
+            matching_conf_thr = gradio.Slider(label="Matching Confidence Thr", value=2.,
                                               minimum=0., maximum=30., step=0.1,
                                               info="Before Fallback to Regr3D!")
             # adjust the confidence threshold
@@ -101,6 +102,30 @@ with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, grad
                                                 info="Only optimize one set of intrinsics for all views")
         run_btn = gradio.Button("Run")
         outmodel = gradio.Model3D()
+
+        examples = gradio.Examples(
+            examples=[
+                [
+                     [os.path.join(HERE_PATH, 'mast3r/assets/NLE_tower/01D90321-69C8-439F-B0B0-E87E7634741C-83120-000041DAE419D7AE.jpg'),
+                      os.path.join(
+                          HERE_PATH, 'mast3r/assets/NLE_tower/1AD85EF5-B651-4291-A5C0-7BDB7D966384-83120-000041DADF639E09.jpg'),
+                      os.path.join(
+                          HERE_PATH, 'mast3r/assets/NLE_tower/28EDBB63-B9F9-42FB-AC86-4852A33ED71B-83120-000041DAF22407A1.jpg'),
+                      os.path.join(
+                          HERE_PATH, 'mast3r/assets/NLE_tower/91E9B685-7A7D-42D7-B933-23A800EE4129-83120-000041DAE12C8176.jpg'),
+                      os.path.join(
+                          HERE_PATH, 'mast3r/assets/NLE_tower/2679C386-1DC0-4443-81B5-93D7EDE4AB37-83120-000041DADB2EA917.jpg'),
+                      os.path.join(
+                          HERE_PATH, 'mast3r/assets/NLE_tower/CDBBD885-54C3-4EB4-9181-226059A60EE0-83120-000041DAE0C3D612.jpg'),
+                      os.path.join(HERE_PATH, 'mast3r/assets/NLE_tower/FF5599FD-768B-431A-AB83-BDA5FB44CB9D-83120-000041DADDE35483.jpg')],
+                    1.5, 0.0, True, 0.2, False
+                ]
+            ],
+            inputs=[inputfiles, min_conf_thr, matching_conf_thr, as_pointcloud, cam_size, shared_intrinsics],
+            outputs=[filestate, outmodel],
+            fn=local_get_reconstructed_scene,
+            cache_examples="lazy",
+        )
 
         # events
         run_btn.click(fn=local_get_reconstructed_scene,
