@@ -4,6 +4,7 @@
 # --------------------------------------------------------
 # masst3r demo
 # --------------------------------------------------------
+import spaces
 import os
 import sys
 import os.path as path
@@ -13,6 +14,10 @@ import tempfile
 HERE_PATH = path.normpath(path.dirname(__file__))  # noqa
 MASt3R_REPO_PATH = path.normpath(path.join(HERE_PATH, './mast3r'))  # noqa
 sys.path.insert(0, MASt3R_REPO_PATH)  # noqa
+
+import mast3r.demo
+mast3r.demo.get_reconstructed_scene = spaces.GPU(mast3r.demo.get_reconstructed_scene)
+mast3r.demo.get_3D_model_from_scene = spaces.GPU(mast3r.demo.get_3D_model_from_scene)
 
 from mast3r.demo import main_demo
 from mast3r.model import AsymmetricMASt3R
@@ -26,7 +31,7 @@ torch.backends.cuda.matmul.allow_tf32 = True
 batch_size = 1
 
 weights_path = "naver/" + 'MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric'
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'cuda'
 model = AsymmetricMASt3R.from_pretrained(weights_path).to(device)
 chkpt_tag = hash_md5(weights_path)
 
