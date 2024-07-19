@@ -1,0 +1,15 @@
+scikit-learn
+pillow-heif
+torch
+torchvision
+roma
+gradio
+matplotlib
+tqdm
+opencv-python
+scipy
+einops
+trimesh
+tensorboard
+pyglet<2
+huggingface-hub[torch]>=0.22
