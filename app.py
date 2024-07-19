@@ -4,7 +4,7 @@
 # --------------------------------------------------------
 # masst3r demo
 # --------------------------------------------------------
-# import spaces
+import spaces
 import os
 import sys
 import os.path as path
@@ -50,7 +50,7 @@ class FileState:
         self.outfile_name = None
 
 
-# @spaces.GPU()
+@spaces.GPU()
 def local_get_reconstructed_scene(filelist, min_conf_thr, matching_conf_thr,
                                   as_pointcloud, cam_size,
                                   shared_intrinsics, **kw):
