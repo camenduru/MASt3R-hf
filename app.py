@@ -31,7 +31,7 @@ torch.backends.cuda.matmul.allow_tf32 = True
 batch_size = 1
 
 weights_path = "naver/" + 'MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric'
-device = 'cuda'
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model = AsymmetricMASt3R.from_pretrained(weights_path).to(device)
 chkpt_tag = hash_md5(weights_path)
 
