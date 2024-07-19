@@ -11,6 +11,7 @@ import os.path as path
 import torch
 import tempfile
 import gradio
+import shutil
 
 HERE_PATH = path.normpath(path.dirname(__file__))  # noqa
 MASt3R_REPO_PATH = path.normpath(path.join(HERE_PATH, './mast3r'))  # noqa
@@ -32,7 +33,7 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model = AsymmetricMASt3R.from_pretrained(weights_path).to(device)
 chkpt_tag = hash_md5(weights_path)
 
-tmpdirname = "tmp/gradio"
+tmpdirname = tempfile.mkdtemp(suffix='_mast3r_gradio_demo')
 image_size = 512
 silent = True
 gradio_delete_cache = 7200
@@ -167,3 +168,4 @@ with get_context(gradio_delete_cache) as demo:
                                         clean_depth, transparent_cams, cam_size, TSDF_thresh],
                                 outputs=outmodel)
 demo.launch(share=None, server_name=None, server_port=None)
+shutil.rmtree(tmpdirname)
