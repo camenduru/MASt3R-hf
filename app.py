@@ -85,7 +85,7 @@ title = "MASt3R Demo"
 with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, gradio_delete_cache)) as demo:
     filestate = gradio.State(None)
     gradio.HTML('<h2 style="text-align: center;">3D Reconstruction with MASt3R</h2>')
-    gradio.HTML('<h3 style="text-align: center;">Upload one or multiple images</h3>')
+    gradio.HTML('<h3 style="text-align: center;">Upload one or multiple images (tested with up to 18 images before running into allocation timeout)</h3>')
     with gradio.Column():
         inputfiles = gradio.File(file_count="multiple")
         with gradio.Row():
