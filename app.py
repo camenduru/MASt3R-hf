@@ -50,7 +50,7 @@ class FileState:
         self.outfile_name = None
 
 
-@spaces.GPU()
+@spaces.GPU(duration=180)
 def local_get_reconstructed_scene(filelist, min_conf_thr, matching_conf_thr,
                                   as_pointcloud, cam_size,
                                   shared_intrinsics, **kw):
