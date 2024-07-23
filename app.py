@@ -2,7 +2,7 @@
 # Licensed under CC BY-NC-SA 4.0 (non-commercial use only).
 #
 # --------------------------------------------------------
-# masst3r demo
+# mast3r demo
 # --------------------------------------------------------
 import spaces
 import os
@@ -22,14 +22,18 @@ from mast3r.demo import get_reconstructed_scene
 from mast3r.model import AsymmetricMASt3R
 from mast3r.utils.misc import hash_md5
 
+import mast3r.utils.path_to_dust3r  # noqa
+from dust3r.demo import set_print_with_timestamp
+
 import matplotlib.pyplot as pl
 pl.ion()
 
 # for gpu >= Ampere and pytorch >= 1.12
 torch.backends.cuda.matmul.allow_tf32 = True
 batch_size = 1
+set_print_with_timestamp()
 
-weights_path = "naver/" + 'MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric'
+weights_path = "naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric"
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 model = AsymmetricMASt3R.from_pretrained(weights_path).to(device)
 chkpt_tag = hash_md5(weights_path)
