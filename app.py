@@ -135,7 +135,7 @@ with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, grad
                       os.path.join(HERE_PATH, 'mast3r/assets/NLE_tower/FF5599FD-768B-431A-AB83-BDA5FB44CB9D-83120-000041DADDE35483.jpg')]
                 ]
             ],
-            inputs=[snapshot, min_conf_thr, matching_conf_thr, as_pointcloud, cam_size, shared_intrinsics, inputfiles],
+            inputs=[snapshot, matching_conf_thr, min_conf_thr, cam_size, as_pointcloud, shared_intrinsics, inputfiles],
             outputs=[filestate, outmodel],
             fn=run_example,
             cache_examples="lazy",
