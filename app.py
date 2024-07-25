@@ -94,7 +94,7 @@ with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, grad
     gradio.HTML('<h2 style="text-align: center;">3D Reconstruction with MASt3R</h2>')
     gradio.HTML('<p>Upload one or multiple images (wait for them to be fully uploaded before hitting the run button). '
                 'We tested with up to 18 images before running into the allocation timeout - set at 3 minutes but your mileage may vary. '
-                'At the very bottom of this page, you will find an example. If you click of it, it will pull the 3D reconstruction from 8 images of the small Naver Labs Europe tower from cache. '
+                'At the very bottom of this page, you will find an example. If you click of it, it will pull the 3D reconstruction from 7 images of the small Naver Labs Europe tower from cache. '
                 'If you want to try larger image collections, you can find the more complete version of this demo that you can run locally '
                 'and more details about the method at <a href="https://github.com/naver/mast3r">github.com/naver/mast3r</a>. '
                 'The checkpoint used in this demo is available at <a href="https://huggingface.co/naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric">huggingface.co/naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric</a>.</p>')
