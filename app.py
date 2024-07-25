@@ -84,14 +84,21 @@ def local_get_reconstructed_scene(filelist, min_conf_thr, matching_conf_thr,
     return filestate, outfile
 
 
+def run_example(snapshot, filelist, min_conf_thr, matching_conf_thr,as_pointcloud, cam_size, shared_intrinsics, **kw):
+    return local_get_reconstructed_scene(filelist, min_conf_thr, matching_conf_thr, as_pointcloud, cam_size, shared_intrinsics, **kw)
+
 css = """.gradio-container {margin: 0 !important; min-width: 100%};"""
 title = "MASt3R Demo"
 with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, gradio_delete_cache)) as demo:
     filestate = gradio.State(None)
     gradio.HTML('<h2 style="text-align: center;">3D Reconstruction with MASt3R</h2>')
-    gradio.HTML('<h3 style="text-align: center;">Upload one or multiple images (tested with up to 18 images before running into allocation timeout)</h3>')
+    gradio.HTML('<p>Upload one or multiple images. '
+                'We tested with up to 18 images before running into the allocation timeout - set at 3 minutes but your mileage may vary. '
+                'If you want to try larger image collections, you can find the more complete version of this demo that you can run locally '
+                'and more details about the method at <a href="https://github.com/naver/mast3r">github.com/naver/mast3r</a></p>')
     with gradio.Column():
         inputfiles = gradio.File(file_count="multiple")
+        snapshot = gradio.Image(None, visible=False)
         with gradio.Row():
             matching_conf_thr = gradio.Slider(label="Matching Confidence Thr", value=2.,
                                               minimum=0., maximum=30., step=0.1,
@@ -110,6 +117,7 @@ with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, grad
         examples = gradio.Examples(
             examples=[
                 [
+                    os.path.join(HERE_PATH, 'mast3r/assets/NLE_tower/FF5599FD-768B-431A-AB83-BDA5FB44CB9D-83120-000041DADDE35483.jpg'),
                      [os.path.join(HERE_PATH, 'mast3r/assets/NLE_tower/01D90321-69C8-439F-B0B0-E87E7634741C-83120-000041DAE419D7AE.jpg'),
                       os.path.join(
                           HERE_PATH, 'mast3r/assets/NLE_tower/1AD85EF5-B651-4291-A5C0-7BDB7D966384-83120-000041DADF639E09.jpg'),
@@ -125,9 +133,9 @@ with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, grad
                     1.5, 0.0, True, 0.2, False
                 ]
             ],
-            inputs=[inputfiles, min_conf_thr, matching_conf_thr, as_pointcloud, cam_size, shared_intrinsics],
+            inputs=[snapshot, inputfiles, min_conf_thr, matching_conf_thr, as_pointcloud, cam_size, shared_intrinsics],
             outputs=[filestate, outmodel],
-            fn=local_get_reconstructed_scene,
+            fn=run_example,
             cache_examples="lazy",
         )
 
@@ -138,5 +146,5 @@ with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, grad
                               cam_size, shared_intrinsics],
                       outputs=[filestate, outmodel])
 
-demo.launch(share=None, server_name=None, server_port=None)
+demo.launch(show_error=True, share=None, server_name=None, server_port=None)
 shutil.rmtree(tmpdirname)
