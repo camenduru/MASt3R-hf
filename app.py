@@ -92,7 +92,7 @@ title = "MASt3R Demo"
 with gradio.Blocks(css=css, title=title, delete_cache=(gradio_delete_cache, gradio_delete_cache)) as demo:
     filestate = gradio.State(None)
     gradio.HTML('<h2 style="text-align: center;">3D Reconstruction with MASt3R</h2>')
-    gradio.HTML('<p>Upload one or multiple images. '
+    gradio.HTML('<p>Upload one or multiple images (wait for them to be fully uploaded before hitting the run button). '
                 'We tested with up to 18 images before running into the allocation timeout - set at 3 minutes but your mileage may vary. '
                 'If you want to try larger image collections, you can find the more complete version of this demo that you can run locally '
                 'and more details about the method at <a href="https://github.com/naver/mast3r">github.com/naver/mast3r</a>. '
